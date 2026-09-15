@@ -1,35 +1,136 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
   <meta charset="UTF-8">
-  <title>Re:hear</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CloudStep | 클라우드 학습 가이드</title>
 </head>
 
 <body>
-    <header>
-        <h1>발표 훈련 서비스</h1>
-        <p>반복적인 연습으로 발표 불안을 줄이고, 자신감을 기릅니다.</p>
-    </header>
 
-    <h2>서비스 소개</h2>
-    <h3>안전한 환경에서 반복하는 연습</h3>
+  <!--
+  사용자: 클라우드와 시스템 엔지니어 분야를 처음 공부하는 초보자
+  목적: 클라우드 학습 순서와 주요 기술을 쉽게 이해한다.
+  핵심 행동: 학습 내용을 확인하고 관심 있는 학습 정보를 신청한다.
+  정보 순서: 서비스 소개 → 주요 기능 → 학습 방법 → 소식 받기
+  -->
 
-    <h2>훈련 기능</h2>
-    <ul>
+  <header>
+    <h1>CloudStep</h1>
+    <p>클라우드 엔지니어를 위한 쉽고 체계적인 학습 가이드</p>
+
+    <nav aria-label="주요 메뉴">
+      <a href="#about">서비스 소개</a>
+      <a href="#features">주요 기능</a>
+      <a href="#steps">학습 방법</a>
+      <a href="#subscribe">소식 받기</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- 서비스 소개 영역 -->
+    <section id="about">
+      <h2>서비스 소개</h2>
+
+      <h3>클라우드 공부, 어디서부터 시작해야 할까요?</h3>
+
+      <p>
+        CloudStep은 클라우드와 시스템 엔지니어 분야를 처음 공부하는
+        학습자를 위한 가이드 서비스입니다.
+      </p>
+
+      <p>
+        Linux, Network, Docker, Kubernetes, AWS 등의 기술을
+        단계별로 학습할 수 있도록 정보를 제공합니다.
+      </p>
+
+      <img
+        src="./assets/images/cloud-study.jpg"
+        alt="노트북으로 클라우드 기술을 공부하는 모습"
+      >
+    </section>
+
+
+    <!-- 주요 기능 영역 -->
+    <section id="features">
+      <h2>주요 기능</h2>
+
+      <ul>
+
         <li>
-              <h3>단계별 발표 연습</h3>
-              <p>연습한 발표 상황을 선택하고 반복해서 연습합니다.</p>
+          <h3>학습 로드맵</h3>
+          <p>
+            Linux부터 AWS와 Kubernetes까지
+            단계별 학습 순서를 확인할 수 있습니다.
+          </p>
         </li>
+
         <li>
-              <h3>가상 청중 연습</h3>
-              <p>가상 청중 앞에서 발표를 연습하고, 청중의 반응을 확인합니다.</p>
+          <h3>핵심 기술 정리</h3>
+          <p>
+            클라우드 엔지니어에게 필요한 주요 기술과 개념을
+            쉽게 정리하여 제공합니다.
+          </p>
         </li>
-        <li>              
-              <h3>발표 피드백</h3>
-              <p>발표 후, AI가 제공하는 피드백을 통해 개선점을 확인합니다.</p>
+
+        <li>
+          <h3>실습 가이드</h3>
+          <p>
+            서버 구축과 컨테이너 환경 등
+            실제 실습에 필요한 내용을 확인할 수 있습니다.
+          </p>
         </li>
-    </ul>
+
+      </ul>
+    </section>
+
+
+    <!-- 이용 방법 영역 -->
+    <section id="steps">
+      <h2>학습 방법</h2>
+
+      <ol>
+        <li>현재 자신의 학습 수준을 확인합니다.</li>
+        <li>학습 로드맵에서 공부할 기술을 선택합니다.</li>
+        <li>개념을 학습하고 직접 실습을 진행합니다.</li>
+        <li>다음 단계의 클라우드 기술을 학습합니다.</li>
+      </ol>
+    </section>
+
+
+    <!-- 이메일 신청 영역 -->
+    <section id="subscribe">
+      <h2>학습 소식 받기</h2>
+
+      <p>
+        새로운 클라우드 학습 자료와 실습 정보를 이메일로 받아보세요.
+      </p>
+
+      <form>
+        <label for="email">이메일 주소</label>
+
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="name@example.com"
+          required
+        >
+
+        <button type="submit">
+          학습 소식 신청하기
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+
+  <!-- 하단 정보 영역 -->
+  <footer>
+    <p>© 2026 CloudStep</p>
+  </footer>
+
 </body>
-
 </html>

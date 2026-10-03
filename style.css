@@ -309,6 +309,56 @@ input[type="email"]:focus {
   outline-offset: 2px;
 }
 
+/* 신청 결과 안내 문구 */
+.subscribe-message {
+  max-width: 570px;
+
+  margin-top: 18px;
+  margin-bottom: 0;
+
+  padding: 12px 14px;
+
+  border-radius: 8px;
+
+  color: #5e6272;
+
+  background-color: #ffffff;
+}
+
+
+/* 이메일을 입력하지 않았을 때 */
+.subscribe-message.is-error {
+  color: #a12622;
+
+  background-color: #fdecec;
+}
+
+
+/* 신청이 완료되었을 때 */
+.subscribe-message.is-success {
+  color: #245c35;
+
+  font-weight: 700;
+
+  background-color: #e7f5ec;
+}
+
+
+/* 신청 완료 후 버튼 */
+.primary-button:disabled {
+  color: #ffffff;
+
+  background-color: #8fa8ca;
+
+  cursor: not-allowed;
+}
+
+
+/* 비활성화된 버튼에는 hover 효과를 적용하지 않음 */
+.primary-button:disabled:hover {
+  background-color: #8fa8ca;
+}
+
 
 /* =========================
    버튼

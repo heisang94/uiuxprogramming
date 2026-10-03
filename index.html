@@ -158,7 +158,10 @@
         이메일로 받아보세요.
       </p>
 
-      <form class="subscribe-form">
+      <form
+        class="subscribe-form"
+        id="subscribeForm"
+      >
 
         <label class="email-field" for="email">
 
@@ -169,7 +172,6 @@
             id="email"
             name="email"
             placeholder="name@example.com"
-            required
           >
 
         </label>
@@ -177,12 +179,20 @@
 
         <button
           class="primary-button"
+          id="subscribeButton"
           type="submit"
         >
           학습 소식 신청하기
         </button>
 
       </form>
+
+      <p
+        id="subscribeMessage"
+        class="subscribe-message"
+      >
+        이메일을 입력한 후 신청 버튼을 눌러주세요.
+      </p>
 
     </section>
 
@@ -194,6 +204,8 @@
     <p>© 2026 CloudStep</p>
 
   </footer>
+
+  <script src="script.js"></script>
 
 </body>
 </html>

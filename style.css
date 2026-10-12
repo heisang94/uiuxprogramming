@@ -1,46 +1,33 @@
-/* 전체 요소의 크기 계산 방식 설정 */
+
+/* 전체 요소 크기 계산 */
 * {
   box-sizing: border-box;
 }
 
-
-/* 페이지 전체 기본 스타일 */
+/* 페이지 기본 스타일 */
 body {
   margin: 0;
-
   color: #292a31;
-
-  font-family:
-    "Noto Sans KR",
-    Arial,
-    sans-serif;
-
+  font-family: "Noto Sans KR", Arial, sans-serif;
   line-height: 1.6;
-
   background-color: #f6f6fb;
 }
 
-
-/* 링크 기본 스타일 */
 a {
   color: inherit;
   text-decoration: none;
 }
 
-
-/* 전체 콘텐츠 너비와 가운데 정렬 */
+/* 전체 콘텐츠 너비 */
 .site-header,
 main,
 .site-footer {
   width: 100%;
   max-width: 1100px;
-
   margin: 0 auto;
-
   padding-left: 24px;
   padding-right: 24px;
 }
-
 
 /* =========================
    Header
@@ -51,63 +38,39 @@ main,
   padding-bottom: 48px;
 }
 
-
-/* 작은 보조 제목 */
 .eyebrow {
   margin: 0 0 8px;
-
   color: #3d6cb9;
-
   font-size: 14px;
   font-weight: 700;
-
   letter-spacing: 0.08em;
 }
 
-
-/* 제목과 본문 기본 여백 제거 */
-h1,
-h2,
-h3,
-p {
+h1, h2, h3, p {
   margin-top: 0;
 }
 
-
-/* 메인 제목 */
 h1 {
   margin-bottom: 12px;
-
   font-size: 44px;
   line-height: 1.2;
 }
 
-
-/* 섹션 제목 */
 h2 {
   margin-bottom: 24px;
-
   font-size: 30px;
 }
 
-
-/* 소제목 */
 h3 {
   margin-bottom: 10px;
-
   font-size: 20px;
 }
 
-
-/* Header 설명 */
 .header-description {
   margin-bottom: 28px;
-
   color: #5e6272;
-
   font-size: 18px;
 }
-
 
 /* =========================
    Navigation
@@ -115,41 +78,49 @@ h3 {
 
 .site-nav {
   display: flex;
-
   flex-wrap: wrap;
-
   gap: 12px;
 }
 
-
 .site-nav a {
   padding: 10px 14px;
-
   border-radius: 8px;
-
   font-weight: 700;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-
-/* 마우스를 올렸을 때 */
 .site-nav a:hover {
   color: #24528f;
-
   background-color: #e8f0fa;
 }
 
-
-/* Tab 키로 선택했을 때 */
-.site-nav a:focus {
+.site-nav a:focus-visible {
   outline: 3px solid #a9c7eb;
-
   outline-offset: 3px;
 }
 
+/* =========================
+   테마 변경 버튼
+========================= */
+
+.theme-control {
+  margin-top: 24px;
+}
+
+.theme-button {
+  padding: 10px 18px;
+  border: 1px solid #3d6cb9;
+  border-radius: 8px;
+  color: #24528f;
+  background-color: #ffffff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.theme-button:hover {
+  background-color: #e8f0fa;
+}
 
 /* =========================
    공통 Section
@@ -157,16 +128,11 @@ h3 {
 
 .content-section {
   margin-bottom: 24px;
-
   padding: 40px;
-
   border: 1px solid #e0e1ec;
-
   border-radius: 18px;
-
   background-color: #ffffff;
 }
-
 
 /* =========================
    서비스 소개
@@ -174,67 +140,76 @@ h3 {
 
 .about-layout {
   display: flex;
-
   align-items: center;
-
   gap: 40px;
 }
 
-
 .about-text {
   flex: 1;
+  min-width: 0;
 }
-
 
 .service-image {
   display: block;
-
   width: 360px;
-
   max-width: 100%;
-
   border-radius: 14px;
 }
-
 
 /* =========================
-   주요 기능
+   주요 기능 - 탭 UI
 ========================= */
 
-.feature-list {
-  display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-
-  gap: 24px;
-
-  margin: 0;
-
-  padding: 0;
-
-  list-style: none;
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-
-.feature-card {
-  min-width: 0;
-
-  padding: 24px;
-
+.tab {
+  padding: 12px 18px;
   border: 1px solid #cddbf0;
+  border-radius: 8px;
+  color: #5e6272;
+  background-color: #f3f7fc;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
 
+.tab:hover {
+  color: #24528f;
+  background-color: #e8f0fa;
+}
+
+/* 선택된 탭 */
+.tab.is-active {
+  color: #ffffff;
+  border-color: #3d6cb9;
+  background-color: #3d6cb9;
+}
+
+/* 탭 콘텐츠 */
+.panel {
+  padding: 24px;
+  border: 1px solid #cddbf0;
   border-radius: 14px;
-
   background-color: #f3f7fc;
 }
 
-
-.feature-card p {
-  margin-bottom: 0;
-
+.panel p {
   color: #5e6272;
 }
 
+.panel p:last-child {
+  margin-bottom: 0;
+}
+
+/* 선택하지 않은 탭은 숨김 */
+.panel[hidden] {
+  display: none;
+}
 
 /* =========================
    학습 방법
@@ -242,16 +217,12 @@ h3 {
 
 .steps-list {
   margin: 0;
-
   padding-left: 24px;
 }
 
-
-/* 첫 번째 항목을 제외한 항목 사이 간격 */
 .steps-list li + li {
   margin-top: 10px;
 }
-
 
 /* =========================
    이메일 신청
@@ -261,104 +232,96 @@ h3 {
   background-color: #eef5fc;
 }
 
-
 .subscribe-form {
-  display: flex;
-
-  align-items: flex-end;
-
-  gap: 12px;
-
   max-width: 570px;
 }
 
+.form-fields {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+}
 
 .email-field {
-  flex: 1;
-
-  margin: 0;
-
+  width: 100%;
   font-weight: 700;
 }
 
-
-/* 이메일 입력창 */
 input[type="email"] {
   display: block;
-
   width: 100%;
-
   margin-top: 8px;
-
   padding: 12px 14px;
-
   border: 1px solid #bfc1d1;
-
   border-radius: 8px;
-
   font: inherit;
 }
 
-
-/* 이메일 입력창 선택 상태 */
 input[type="email"]:focus {
   border-color: #3d6cb9;
-
   outline: 3px solid #d7e4f5;
-
   outline-offset: 2px;
 }
 
-/* 신청 결과 안내 문구 */
-.subscribe-message {
-  max-width: 570px;
-
-  margin-top: 18px;
-  margin-bottom: 0;
-
-  padding: 12px 14px;
-
-  border-radius: 8px;
-
+/* 글자 수 표시 */
+.input-count {
+  margin: 0;
   color: #5e6272;
+  font-size: 14px;
+}
 
+/* 체크박스 */
+.agree-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.agree-row input {
+  flex: 0 0 auto;
+  margin-top: 6px;
+  accent-color: #3d6cb9;
+}
+
+.agree-message {
+  width: 100%;
+  margin: 0;
+  padding: 12px;
+  border-radius: 8px;
+  color: #5e6272;
   background-color: #ffffff;
 }
 
+.agree-message.is-ready {
+  color: #245c35;
+  background-color: #e7f5ec;
+  font-weight: 700;
+}
 
-/* 이메일을 입력하지 않았을 때 */
+/* 신청 결과 */
+.subscribe-message {
+  max-width: 570px;
+  margin-top: 18px;
+  margin-bottom: 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #5e6272;
+  background-color: #ffffff;
+}
+
 .subscribe-message.is-error {
   color: #a12622;
-
   background-color: #fdecec;
 }
 
-
-/* 신청이 완료되었을 때 */
 .subscribe-message.is-success {
   color: #245c35;
-
   font-weight: 700;
-
   background-color: #e7f5ec;
 }
-
-
-/* 신청 완료 후 버튼 */
-.primary-button:disabled {
-  color: #ffffff;
-
-  background-color: #8fa8ca;
-
-  cursor: not-allowed;
-}
-
-
-/* 비활성화된 버튼에는 hover 효과를 적용하지 않음 */
-.primary-button:disabled:hover {
-  background-color: #8fa8ca;
-}
-
 
 /* =========================
    버튼
@@ -366,46 +329,40 @@ input[type="email"]:focus {
 
 .primary-button {
   padding: 12px 18px;
-
   border: 0;
-
   border-radius: 8px;
-
   color: #ffffff;
-
   font: inherit;
-
   font-weight: 700;
-
   background-color: #3d6cb9;
-
   cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.1s ease;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
-
-/* 마우스를 올렸을 때 */
 .primary-button:hover {
   background-color: #24528f;
 }
 
-
-/* Tab 키로 선택했을 때 */
-.primary-button:focus {
+.primary-button:focus-visible,
+.theme-button:focus-visible,
+.tab:focus-visible {
   outline: 3px solid #a9c7eb;
-
   outline-offset: 3px;
 }
 
-
-/* 버튼을 누르는 순간 */
 .primary-button:active {
   transform: translateY(1px);
 }
 
+.primary-button:disabled {
+  color: #ffffff;
+  background-color: #8fa8ca;
+  cursor: not-allowed;
+}
+
+.primary-button:disabled:hover {
+  background-color: #8fa8ca;
+}
 
 /* =========================
    Footer
@@ -413,18 +370,108 @@ input[type="email"]:focus {
 
 .site-footer {
   padding-top: 24px;
-
   padding-bottom: 48px;
-
   color: #747786;
-
   font-size: 14px;
 }
 
+/* =========================
+   다크 모드
+========================= */
 
+body.dark {
+  color: #f4f4f8;
+  background-color: #20212a;
+}
+
+body.dark .header-description,
+body.dark .site-footer,
+body.dark .input-count {
+  color: #c6cad8;
+}
+
+body.dark .eyebrow {
+  color: #a9c7ff;
+}
+
+body.dark .content-section {
+  border-color: #50515f;
+  background-color: #2d2e38;
+}
+
+body.dark .subscribe-section {
+  background-color: #28364b;
+}
+
+body.dark .site-nav a:hover {
+  color: #ffffff;
+  background-color: #40485b;
+}
+
+body.dark .theme-button {
+  color: #ffffff;
+  border-color: #8facdf;
+  background-color: #3e4c67;
+}
+
+body.dark .theme-button:hover {
+  background-color: #516486;
+}
+
+body.dark .tab {
+  color: #e0e5f0;
+  border-color: #596174;
+  background-color: #373e4d;
+}
+
+body.dark .tab:hover {
+  background-color: #4b5870;
+}
+
+body.dark .tab.is-active {
+  color: #ffffff;
+  border-color: #638cce;
+  background-color: #416ba9;
+}
+
+body.dark .panel {
+  border-color: #50515f;
+  background-color: #363b49;
+}
+
+body.dark .panel p {
+  color: #d8d8e2;
+}
+
+body.dark input[type="email"] {
+  color: #ffffff;
+  border-color: #667085;
+  background-color: #343b4c;
+}
+
+body.dark input[type="email"]::placeholder {
+  color: #b8c0d0;
+}
+
+body.dark .agree-message,
+body.dark .subscribe-message {
+  color: #e0e5f0;
+  background-color: #363e50;
+}
+
+body.dark .agree-message.is-ready,
+body.dark .subscribe-message.is-success {
+  color: #b5efc3;
+  background-color: #244732;
+}
+
+body.dark .subscribe-message.is-error {
+  color: #ffb8b8;
+  background-color: #522b31;
+}
 
 /* =========================
-   반응형 - 모바일
+   반응형 - 태블릿/모바일
 ========================= */
 
 @media (max-width: 768px) {
@@ -433,82 +480,95 @@ input[type="email"]:focus {
     font-size: 16px;
   }
 
-
   .site-header {
     padding-top: 32px;
     padding-bottom: 24px;
   }
 
-
   h1 {
     font-size: 36px;
   }
-
 
   h2 {
     font-size: 28px;
   }
 
-
-  /* 메뉴 세로 배치 */
   .site-nav {
     flex-direction: column;
     align-items: stretch;
-
     gap: 8px;
   }
-
 
   .site-nav a {
     padding: 8px 0;
   }
 
-
-  /* 서비스 소개 영역 세로 배치 */
   .about-layout {
     flex-direction: column;
     align-items: stretch;
-
     gap: 24px;
   }
-
 
   .service-image {
     width: 100%;
   }
 
-
-  /* 기능 카드 한 줄 배치 */
-  .feature-list {
-    grid-template-columns: 1fr;
-  }
-
-
-  /* 콘텐츠 여백 축소 */
   .content-section {
     padding: 24px;
   }
 
-
-  /* 이메일 입력 영역 세로 배치 */
-  .subscribe-form {
+  .tabs {
     flex-direction: column;
     align-items: stretch;
   }
 
-
-  .email-field {
+  .tab {
     width: 100%;
+    text-align: left;
   }
 
-
-  input[type="email"],
-  .primary-button {
-    width: 100%;
+  .panel {
+    padding: 20px;
   }
 
-
   .primary-button {
+    width: 100%;
     min-height: 48px;
   }
+
+}
+
+/* =========================
+   반응형 - 작은 모바일
+========================= */
+
+@media (max-width: 390px) {
+
+  .site-header,
+  main,
+  .site-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .content-section {
+    padding: 18px;
+  }
+
+  .panel {
+    padding: 16px;
+  }
+
+  .theme-button {
+    width: 100%;
+  }
+
 }

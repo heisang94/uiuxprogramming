@@ -1,574 +1,144 @@
-
 /* 전체 요소 크기 계산 */
-* {
-  box-sizing: border-box;
-}
-
+* { box-sizing: border-box; }
 /* 페이지 기본 스타일 */
-body {
-  margin: 0;
-  color: #292a31;
-  font-family: "Noto Sans KR", Arial, sans-serif;
-  line-height: 1.6;
-  background-color: #f6f6fb;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* 전체 콘텐츠 너비 */
-.site-header,
-main,
-.site-footer {
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-
-/* =========================
-   Header
-========================= */
-
-.site-header {
-  padding-top: 72px;
-  padding-bottom: 48px;
-}
-
-.eyebrow {
-  margin: 0 0 8px;
-  color: #3d6cb9;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-h1, h2, h3, p {
-  margin-top: 0;
-}
-
-h1 {
-  margin-bottom: 12px;
-  font-size: 44px;
-  line-height: 1.2;
-}
-
-h2 {
-  margin-bottom: 24px;
-  font-size: 30px;
-}
-
-h3 {
-  margin-bottom: 10px;
-  font-size: 20px;
-}
-
-.header-description {
-  margin-bottom: 28px;
-  color: #5e6272;
-  font-size: 18px;
-}
+body { margin: 0; color: #292a31; font-family: "Noto Sans KR", Arial, sans-serif; line-height: 1.6; background-color: #f6f6fb; }
+a { color: inherit; text-decoration: none; }
+.site-header, main, .site-footer { width: 100%; max-width: 1100px; margin: 0 auto; padding-left: 24px; padding-right: 24px; }
+/* Header */
+.site-header { padding-top: 72px; padding-bottom: 48px; }
+.eyebrow { margin: 0 0 8px; color: #3d6cb9; font-size: 14px; font-weight: 700; letter-spacing: 0.08em; }
+h1, h2, h3, p { margin-top: 0; }
+h1 { margin-bottom: 12px; font-size: 44px; line-height: 1.2; }
+h2 { margin-bottom: 24px; font-size: 30px; }
+h3 { margin-bottom: 10px; font-size: 20px; }
+.header-description { margin-bottom: 28px; color: #5e6272; font-size: 18px; }
+/* Navigation */
+.site-nav { display: flex; flex-wrap: wrap; gap: 12px; }
+.site-nav a { padding: 10px 14px; border-radius: 8px; font-weight: 700; transition: background-color .2s, color .2s; }
+.site-nav a:hover { color: #24528f; background-color: #e8f0fa; }
+.site-nav a:focus-visible { outline: 3px solid #a9c7eb; outline-offset: 3px; }
+/* 테마 변경 버튼 */
+.theme-control { margin-top: 24px; }
+.theme-button { padding: 10px 18px; border: 1px solid #3d6cb9; border-radius: 8px; color: #24528f; background-color: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.theme-button:hover { background-color: #e8f0fa; }
+/* 공통 Section */
+.content-section { margin-bottom: 24px; padding: 40px; border: 1px solid #e0e1ec; border-radius: 18px; background-color: #fff; }
+/* 서비스 소개 */
+.about-layout { display: flex; align-items: center; gap: 40px; }
+.about-text { flex: 1; min-width: 0; }
+.service-image { display: block; width: 360px; max-width: 100%; border-radius: 14px; }
+/* 주요 기능 - 탭 UI */
+.tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.tab { padding: 12px 18px; border: 1px solid #cddbf0; border-radius: 8px; color: #5e6272; background-color: #f3f7fc; font: inherit; font-weight: 700; cursor: pointer; }
+.tab:hover { color: #24528f; background-color: #e8f0fa; }
+.tab.is-active { color: #fff; border-color: #3d6cb9; background-color: #3d6cb9; }
+.panel { padding: 24px; border: 1px solid #cddbf0; border-radius: 14px; background-color: #f3f7fc; }
+.panel p { color: #5e6272; }
+.panel p:last-child { margin-bottom: 0; }
+.panel[hidden] { display: none; }
+/* 학습 방법 */
+.steps-list { margin: 0; padding-left: 24px; }
+.steps-list li + li { margin-top: 10px; }
+/* 이메일 신청 */
+.subscribe-section { background-color: #eef5fc; }
+.subscribe-form { max-width: 570px; }
+.form-fields { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; width: 100%; }
+.email-field { width: 100%; font-weight: 700; }
+input[type="email"] { display: block; width: 100%; margin-top: 8px; padding: 12px 14px; border: 1px solid #bfc1d1; border-radius: 8px; font: inherit; }
+input[type="email"]:focus { border-color: #3d6cb9; outline: 3px solid #d7e4f5; outline-offset: 2px; }
+.input-count { margin: 0; color: #5e6272; font-size: 14px; }
+.agree-row { display: flex; align-items: flex-start; gap: 8px; cursor: pointer; }
+.agree-row input { flex: 0 0 auto; margin-top: 6px; accent-color: #3d6cb9; }
+.agree-message { width: 100%; margin: 0; padding: 12px; border-radius: 8px; color: #5e6272; background-color: #fff; }
+.agree-message.is-ready { color: #245c35; background-color: #e7f5ec; font-weight: 700; }
+.subscribe-message { max-width: 570px; margin-top: 18px; margin-bottom: 0; padding: 12px 14px; border-radius: 8px; color: #5e6272; background-color: #fff; }
+.subscribe-message.is-error { color: #a12622; background-color: #fdecec; }
+.subscribe-message.is-success { color: #245c35; font-weight: 700; background-color: #e7f5ec; }
+/* 버튼 */
+.primary-button { padding: 12px 18px; border: 0; border-radius: 8px; color: #fff; font: inherit; font-weight: 700; background-color: #3d6cb9; cursor: pointer; transition: background-color .2s, transform .1s; }
+.primary-button:hover { background-color: #24528f; }
+.primary-button:focus-visible, .theme-button:focus-visible, .tab:focus-visible, .secondary-button:focus-visible { outline: 3px solid #a9c7eb; outline-offset: 3px; }
+.primary-button:active { transform: translateY(1px); }
+.primary-button:disabled { color: #fff; background-color: #8fa8ca; cursor: not-allowed; }
+.primary-button:disabled:hover { background-color: #8fa8ca; }
+/* Footer */
+.site-footer { padding-top: 24px; padding-bottom: 48px; color: #747786; font-size: 14px; }
 
 /* =========================
-   Navigation
+   7주차 - 학습 계획 단계별 UI
 ========================= */
-
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.site-nav a {
-  padding: 10px 14px;
-  border-radius: 8px;
-  font-weight: 700;
-  transition: background-color 0.2s, color 0.2s;
-}
-
-.site-nav a:hover {
-  color: #24528f;
-  background-color: #e8f0fa;
-}
-
-.site-nav a:focus-visible {
-  outline: 3px solid #a9c7eb;
-  outline-offset: 3px;
-}
-
-/* =========================
-   테마 변경 버튼
-========================= */
-
-.theme-control {
-  margin-top: 24px;
-}
-
-.theme-button {
-  padding: 10px 18px;
-  border: 1px solid #3d6cb9;
-  border-radius: 8px;
-  color: #24528f;
-  background-color: #ffffff;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.theme-button:hover {
-  background-color: #e8f0fa;
-}
-
-/* =========================
-   공통 Section
-========================= */
-
-.content-section {
-  margin-bottom: 24px;
-  padding: 40px;
-  border: 1px solid #e0e1ec;
-  border-radius: 18px;
-  background-color: #ffffff;
-}
-
-/* =========================
-   서비스 소개
-========================= */
-
-.about-layout {
-  display: flex;
-  align-items: center;
-  gap: 40px;
-}
-
-.about-text {
-  flex: 1;
-  min-width: 0;
-}
-
-.service-image {
-  display: block;
-  width: 360px;
-  max-width: 100%;
-  border-radius: 14px;
-}
-
-/* =========================
-   주요 기능 - 탭 UI
-========================= */
-
-.tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.tab {
-  padding: 12px 18px;
-  border: 1px solid #cddbf0;
-  border-radius: 8px;
-  color: #5e6272;
-  background-color: #f3f7fc;
-  font: inherit;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.tab:hover {
-  color: #24528f;
-  background-color: #e8f0fa;
-}
-
-/* 선택된 탭 */
-.tab.is-active {
-  color: #ffffff;
-  border-color: #3d6cb9;
-  background-color: #3d6cb9;
-}
-
-/* 탭 콘텐츠 */
-.panel {
-  padding: 24px;
-  border: 1px solid #cddbf0;
-  border-radius: 14px;
-  background-color: #f3f7fc;
-}
-
-.panel p {
-  color: #5e6272;
-}
-
-.panel p:last-child {
-  margin-bottom: 0;
-}
-
-/* 선택하지 않은 탭은 숨김 */
-.panel[hidden] {
-  display: none;
-}
-
-/* =========================
-   학습 방법
-========================= */
-
-.steps-list {
-  margin: 0;
-  padding-left: 24px;
-}
-
-.steps-list li + li {
-  margin-top: 10px;
-}
-
-/* =========================
-   이메일 신청
-========================= */
-
-.subscribe-section {
-  background-color: #eef5fc;
-}
-
-.subscribe-form {
-  max-width: 570px;
-}
-
-.form-fields {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  width: 100%;
-}
-
-.email-field {
-  width: 100%;
-  font-weight: 700;
-}
-
-input[type="email"] {
-  display: block;
-  width: 100%;
-  margin-top: 8px;
-  padding: 12px 14px;
-  border: 1px solid #bfc1d1;
-  border-radius: 8px;
-  font: inherit;
-}
-
-input[type="email"]:focus {
-  border-color: #3d6cb9;
-  outline: 3px solid #d7e4f5;
-  outline-offset: 2px;
-}
-
-/* 글자 수 표시 */
-.input-count {
-  margin: 0;
-  color: #5e6272;
-  font-size: 14px;
-}
-
-/* 체크박스 */
-.agree-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  cursor: pointer;
-}
-
-.agree-row input {
-  flex: 0 0 auto;
-  margin-top: 6px;
-  accent-color: #3d6cb9;
-}
-
-.agree-message {
-  width: 100%;
-  margin: 0;
-  padding: 12px;
-  border-radius: 8px;
-  color: #5e6272;
-  background-color: #ffffff;
-}
-
-.agree-message.is-ready {
-  color: #245c35;
-  background-color: #e7f5ec;
-  font-weight: 700;
-}
-
-/* 신청 결과 */
-.subscribe-message {
-  max-width: 570px;
-  margin-top: 18px;
-  margin-bottom: 0;
-  padding: 12px 14px;
-  border-radius: 8px;
-  color: #5e6272;
-  background-color: #ffffff;
-}
-
-.subscribe-message.is-error {
-  color: #a12622;
-  background-color: #fdecec;
-}
-
-.subscribe-message.is-success {
-  color: #245c35;
-  font-weight: 700;
-  background-color: #e7f5ec;
-}
-
-/* =========================
-   버튼
-========================= */
-
-.primary-button {
-  padding: 12px 18px;
-  border: 0;
-  border-radius: 8px;
-  color: #ffffff;
-  font: inherit;
-  font-weight: 700;
-  background-color: #3d6cb9;
-  cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
-}
-
-.primary-button:hover {
-  background-color: #24528f;
-}
-
-.primary-button:focus-visible,
-.theme-button:focus-visible,
-.tab:focus-visible {
-  outline: 3px solid #a9c7eb;
-  outline-offset: 3px;
-}
-
-.primary-button:active {
-  transform: translateY(1px);
-}
-
-.primary-button:disabled {
-  color: #ffffff;
-  background-color: #8fa8ca;
-  cursor: not-allowed;
-}
-
-.primary-button:disabled:hover {
-  background-color: #8fa8ca;
-}
-
-/* =========================
-   Footer
-========================= */
-
-.site-footer {
-  padding-top: 24px;
-  padding-bottom: 48px;
-  color: #747786;
-  font-size: 14px;
-}
-
+.plan-section { border-color: #cddbf0; }
+.plan-flow { margin-top: 24px; padding: 24px; border: 1px solid #cddbf0; border-radius: 14px; background-color: #f3f7fc; }
+/* hidden 속성을 CSS display 규칙보다 우선 처리 */
+.plan-flow[hidden], .plan-step[hidden] { display: none; }
+.plan-progress { margin-bottom: 20px; color: #24528f; font-weight: 700; }
+.plan-step label { display: block; margin: 16px 0 8px; font-weight: 700; }
+.plan-step input, .plan-step select { display: block; width: 100%; max-width: 560px; min-height: 46px; padding: 10px 12px; border: 1px solid #bfc1d1; border-radius: 8px; color: #292a31; background-color: #fff; font: inherit; }
+.plan-step input:focus, .plan-step select:focus { outline: 3px solid #d7e4f5; outline-offset: 2px; border-color: #3d6cb9; }
+.plan-step .has-error { border-color: #a12622; }
+.required-mark { font-size: 14px; color: #a12622; }
+.plan-error { min-height: 1.5em; margin: 8px 0 12px; color: #a12622; font-size: 14px; }
+.plan-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.secondary-button { padding: 12px 18px; border: 1px solid #3d6cb9; border-radius: 8px; color: #24528f; background: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.secondary-button:hover { background-color: #e8f0fa; }
+.plan-summary { padding: 18px; border-radius: 10px; background: #fff; overflow-wrap: anywhere; }
+.plan-summary p:last-child { margin-bottom: 0; }
 /* =========================
    다크 모드
 ========================= */
-
-body.dark {
-  color: #f4f4f8;
-  background-color: #20212a;
-}
-
-body.dark .header-description,
-body.dark .site-footer,
-body.dark .input-count {
-  color: #c6cad8;
-}
-
-body.dark .eyebrow {
-  color: #a9c7ff;
-}
-
-body.dark .content-section {
-  border-color: #50515f;
-  background-color: #2d2e38;
-}
-
-body.dark .subscribe-section {
-  background-color: #28364b;
-}
-
-body.dark .site-nav a:hover {
-  color: #ffffff;
-  background-color: #40485b;
-}
-
-body.dark .theme-button {
-  color: #ffffff;
-  border-color: #8facdf;
-  background-color: #3e4c67;
-}
-
-body.dark .theme-button:hover {
-  background-color: #516486;
-}
-
-body.dark .tab {
-  color: #e0e5f0;
-  border-color: #596174;
-  background-color: #373e4d;
-}
-
-body.dark .tab:hover {
-  background-color: #4b5870;
-}
-
-body.dark .tab.is-active {
-  color: #ffffff;
-  border-color: #638cce;
-  background-color: #416ba9;
-}
-
-body.dark .panel {
-  border-color: #50515f;
-  background-color: #363b49;
-}
-
-body.dark .panel p {
-  color: #d8d8e2;
-}
-
-body.dark input[type="email"] {
-  color: #ffffff;
-  border-color: #667085;
-  background-color: #343b4c;
-}
-
-body.dark input[type="email"]::placeholder {
-  color: #b8c0d0;
-}
-
-body.dark .agree-message,
-body.dark .subscribe-message {
-  color: #e0e5f0;
-  background-color: #363e50;
-}
-
-body.dark .agree-message.is-ready,
-body.dark .subscribe-message.is-success {
-  color: #b5efc3;
-  background-color: #244732;
-}
-
-body.dark .subscribe-message.is-error {
-  color: #ffb8b8;
-  background-color: #522b31;
-}
-
-/* =========================
-   반응형 - 태블릿/모바일
-========================= */
-
+body.dark { color: #f4f4f8; background-color: #20212a; }
+body.dark .header-description, body.dark .site-footer, body.dark .input-count { color: #c6cad8; }
+body.dark .eyebrow { color: #a9c7ff; }
+body.dark .content-section { border-color: #50515f; background-color: #2d2e38; }
+body.dark .subscribe-section { background-color: #28364b; }
+body.dark .site-nav a:hover { color: #fff; background-color: #40485b; }
+body.dark .theme-button { color: #fff; border-color: #8facdf; background-color: #3e4c67; }
+body.dark .theme-button:hover { background-color: #516486; }
+body.dark .tab { color: #e0e5f0; border-color: #596174; background-color: #373e4d; }
+body.dark .tab:hover { background-color: #4b5870; }
+body.dark .tab.is-active { color: #fff; border-color: #638cce; background-color: #416ba9; }
+body.dark .panel { border-color: #50515f; background-color: #363b49; }
+body.dark .panel p { color: #d8d8e2; }
+body.dark input[type="email"] { color: #fff; border-color: #667085; background-color: #343b4c; }
+body.dark input[type="email"]::placeholder { color: #b8c0d0; }
+body.dark .agree-message, body.dark .subscribe-message { color: #e0e5f0; background-color: #363e50; }
+body.dark .agree-message.is-ready, body.dark .subscribe-message.is-success { color: #b5efc3; background-color: #244732; }
+body.dark .subscribe-message.is-error { color: #ffb8b8; background-color: #522b31; }
+/* 7주차 다크 모드 */
+body.dark .plan-flow { border-color: #596174; background: #363b49; }
+body.dark .plan-progress { color: #a9c7ff; }
+body.dark .plan-step input, body.dark .plan-step select { color: #fff; border-color: #667085; background: #343b4c; }
+body.dark .plan-summary { background: #2d2e38; }
+body.dark .secondary-button { color: #fff; border-color: #8facdf; background: #3e4c67; }
+body.dark .secondary-button:hover { background: #516486; }
+body.dark .plan-error, body.dark .required-mark { color: #ffb8b8; }
+body.dark .plan-step .has-error { border-color: #ffb8b8; }
+/* 태블릿/모바일 */
 @media (max-width: 768px) {
-
-  body {
-    font-size: 16px;
-  }
-
-  .site-header {
-    padding-top: 32px;
-    padding-bottom: 24px;
-  }
-
-  h1 {
-    font-size: 36px;
-  }
-
-  h2 {
-    font-size: 28px;
-  }
-
-  .site-nav {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-  }
-
-  .site-nav a {
-    padding: 8px 0;
-  }
-
-  .about-layout {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 24px;
-  }
-
-  .service-image {
-    width: 100%;
-  }
-
-  .content-section {
-    padding: 24px;
-  }
-
-  .tabs {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .tab {
-    width: 100%;
-    text-align: left;
-  }
-
-  .panel {
-    padding: 20px;
-  }
-
-  .primary-button {
-    width: 100%;
-    min-height: 48px;
-  }
-
+  body { font-size: 16px; }
+  .site-header { padding-top: 32px; padding-bottom: 24px; }
+  h1 { font-size: 36px; }
+  h2 { font-size: 28px; }
+  .site-nav { flex-direction: column; align-items: stretch; gap: 8px; }
+  .site-nav a { padding: 8px 0; }
+  .about-layout { flex-direction: column; align-items: stretch; gap: 24px; }
+  .service-image { width: 100%; }
+  .content-section { padding: 24px; }
+  .tabs { flex-direction: column; align-items: stretch; }
+  .tab { width: 100%; text-align: left; }
+  .panel { padding: 20px; }
+  .primary-button { width: 100%; min-height: 48px; }
+  .plan-flow { padding: 16px; }
+  .plan-actions { flex-direction: column; }
+  .plan-actions .secondary-button { width: 100%; min-height: 48px; }
 }
-
-/* =========================
-   반응형 - 작은 모바일
-========================= */
-
+/* 작은 모바일 */
 @media (max-width: 390px) {
-
-  .site-header,
-  main,
-  .site-footer {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  h1 {
-    font-size: 32px;
-  }
-
-  h2 {
-    font-size: 24px;
-  }
-
-  .content-section {
-    padding: 18px;
-  }
-
-  .panel {
-    padding: 16px;
-  }
-
-  .theme-button {
-    width: 100%;
-  }
-
+  .site-header, main, .site-footer { padding-left: 16px; padding-right: 16px; }
+  h1 { font-size: 32px; }
+  h2 { font-size: 24px; }
+  .content-section { padding: 18px; }
+  .panel { padding: 16px; }
+  .theme-button { width: 100%; }
+  .plan-flow { padding: 12px; }
 }

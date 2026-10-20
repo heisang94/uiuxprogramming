@@ -97,5 +97,3 @@ HTML5, CSS3, JavaScript (Vanilla JS), GitHub Pages
 
 - GitHub 저장소: https://github.com/heisang94/uiuxprogramming
 - GitHub Pages: https://heisang94.github.io/uiuxprogramming/
-
-위 주소는 기존 프로젝트 주소입니다. **8주차 수정본을 직접 커밋·푸시하고 배포 결과를 확인한 뒤 제출**합니다.

@@ -69,15 +69,5 @@ CloudStep은 클라우드·시스템 엔지니어 입문자를 위한 학습 가
 | --- | --- | --- |
 | 직접 확인 전 | 정상/오류/조건부 입력/저장/재시작 | 배포 후 작성 예정 |
 
-## 5. 실행 및 배포
-`index.html`, `style.css`, `script.js`를 같은 폴더에 두고 VS Code Live Server 또는 브라우저에서 실행합니다.
-
-`assets/images/cloud-study.jpg`는 기존 프로젝트의 이미지입니다. 9주차 전달 ZIP에는 원본 이미지가 포함되지 않으므로 GitHub 저장소의 기존 이미지를 유지해야 합니다.
-
-- GitHub: https://github.com/heisang94/uiuxprogramming
-- GitHub Pages: https://heisang94.github.io/uiuxprogramming/
-
-**제출**: GitHub에 수정 파일을 커밋·푸시하고 Pages 반영 후, 위 GitHub 주소와 GitHub Pages 주소를 LMS에 제출합니다.
-
-## 6. 참고사항
+## 5. 참고사항
 이메일 신청은 기존 화면 시연이며 실제 메일을 보내지 않습니다. 학습 계획은 브라우저 로컬 저장소에만 기록됩니다. 브라우저나 저장 공간을 삭제하면 보관 데이터가 삭제될 수 있습니다. 다른 기기와 동기화하지 않습니다.

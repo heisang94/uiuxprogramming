@@ -103,8 +103,66 @@ const planSelectError = document.querySelector('#planSelectError');
 const planSummary = document.querySelector('#planSummary');
 const planCompleteMessage = document.querySelector('#planCompleteMessage');
 const planStepNames = ['학습자 정보 입력', '학습 분야 선택', '학습 계획 확인'];
+// 9주차: 폼, 입력 상태, 조건부 입력, 저장 상태
+const planForm = document.querySelector('#planForm');
+const nameField = document.querySelector('#nameField');
+const nameHelp = document.querySelector('#nameHelp');
+const nameCount = document.querySelector('#nameCount');
+const practiceOption = document.querySelector('#practiceOption');
+const practiceOptions = document.querySelector('#practiceOptions');
+const practiceGoals = [...document.querySelectorAll('input[name="practiceGoal"]')];
+const submitStatus = document.querySelector('#submitStatus');
+const saveButton = document.querySelector('#planComplete');
+const backButton = document.querySelector('#planBack3');
+const forceSaveFailure = new URLSearchParams(location.search).has('save-error');
+let currentPlanStep = 1;
+let isSaving = false;
+
+function syncPracticeOptions() {
+  const open = practiceOption.checked;
+  practiceOption.setAttribute('aria-expanded', String(open));
+  practiceOptions.hidden = !open;
+  practiceGoals.forEach(function (radio) { radio.disabled = !open; });
+}
+practiceOption.addEventListener('change', syncPracticeOptions);
+syncPracticeOptions();
+
+function updateNameExperience() {
+  const length = planName.value.length;
+  const enough = planName.value.trim().length >= 2;
+  const invalid = planName.getAttribute('aria-invalid') === 'true';
+  nameCount.textContent = length + ' / 30자';
+  nameField.classList.toggle('is-valid', enough && !invalid);
+  if (!invalid) nameHelp.textContent = enough ? '입력 조건을 충족했습니다.' : '2~30자로 입력해 주세요.';
+}
+
+function showNameError(message) {
+  planError.textContent = message;
+  planName.classList.add('has-error');
+  planName.setAttribute('aria-invalid', 'true');
+  nameField.classList.remove('is-valid');
+  nameField.classList.add('has-error');
+  return false;
+}
+function clearNameError() {
+  planError.textContent = '';
+  planName.classList.remove('has-error');
+  planName.removeAttribute('aria-invalid');
+  nameField.classList.remove('has-error');
+  updateNameExperience();
+}
+function validateName() {
+  const name = planName.value.trim();
+  if (!name) return showNameError('학습자 이름을 입력해 주세요.');
+  if (name.length < 2) return showNameError('학습자 이름을 2자 이상 입력해 주세요.');
+  clearNameError();
+  return true;
+}
+updateNameExperience();
+
 
 function showPlanStep(step) {
+  currentPlanStep = step;
   planSteps.forEach(function (item) { item.hidden = Number(item.dataset.step) !== step; });
   planProgress.textContent = step <= 3 ? step + ' / 3 · ' + planStepNames[step - 1] : '학습 계획 완성!';
 }
@@ -118,23 +176,14 @@ planStart.addEventListener('click', function () {
 });
 
 document.querySelector('#planNext1').addEventListener('click', function () {
-  if (!planName.value.trim()) {
-    planError.textContent = '이름을 입력해 주세요. 입력 후 다음 단계로 이동할 수 있습니다.';
-    planName.classList.add('has-error');
-    planName.setAttribute('aria-invalid', 'true');
-    planName.focus();
-    return;
-  }
-  planError.textContent = '';
-  planName.classList.remove('has-error');
-  planName.removeAttribute('aria-invalid');
+  if (!validateName()) { planName.focus(); return; }
   showPlanStep(2);
   planField.focus();
 });
 planName.addEventListener('input', function () {
-  planError.textContent = '';
-  planName.classList.remove('has-error');
-  planName.removeAttribute('aria-invalid');
+  updateNameExperience();
+  // 한 번 검증 오류가 표시된 후에만 입력 중 재검증
+  if (planName.getAttribute('aria-invalid') === 'true') validateName();
 });
 
 function clearPlanSelectError() {
@@ -173,8 +222,13 @@ document.querySelector('#planNext2').addEventListener('click', function () {
     return;
   }
   clearPlanSelectError();
+  if (practiceOption.checked && !practiceGoals.some(radio => radio.checked)) {
+    planSelectError.textContent = '추가 실습 목표를 선택하거나 체크를 해제해 주세요.';
+    practiceGoals[0].focus();
+    return;
+  }
   planSummary.replaceChildren();
-  [['학습자', planName.value.trim()], ['관심 분야', planField.value], ['학습 수준', planLevel.value]].forEach(function (entry) {
+  [['학습자', planName.value.trim()], ['관심 분야', planField.value], ['학습 수준', planLevel.value], ['추가 실습 목표', practiceOption.checked ? (practiceGoals.find(radio => radio.checked)?.value || '미선택') : '없음']].forEach(function (entry) {
     const row = document.createElement('p');
     const strong = document.createElement('strong');
     strong.textContent = entry[0] + ': ';
@@ -188,15 +242,67 @@ document.querySelector('#planBack3').addEventListener('click', function () {
   showPlanStep(2);
   planField.focus();
 });
-document.querySelector('#planComplete').addEventListener('click', function () {
-  planCompleteMessage.textContent = planName.value.trim() + '님의 \'' + planField.value + '\' 학습 계획이 완성되었습니다. (수준: ' + planLevel.value + ')';
-  showPlanStep(4);
-  prepareRecommendations();  // 8주차: 7주차의 완료 상태와 연결
-  document.querySelector('#goRecommend').focus();
+// 저장 버튼 클릭과 Enter 입력을 하나의 submit 흐름으로 처리
+function setSaveState(loading, message) {
+  isSaving = loading;
+  planForm.setAttribute('aria-busy', String(loading));
+  saveButton.disabled = loading;
+  backButton.disabled = loading;
+  saveButton.textContent = loading ? '저장하는 중...' : '학습 계획 저장하기';
+  submitStatus.textContent = message;
+  submitStatus.classList.toggle('is-error', !loading && message.startsWith('저장하지'));
+}
+function wait(milliseconds) {
+  return new Promise(resolve => window.setTimeout(resolve, milliseconds));
+}
+async function persistPlan(plan) {
+  await wait(600); // 저장 중 상태를 확인하기 위한 시연용 지연
+  if (forceSaveFailure) throw new Error('수업용 저장 실패');
+  const existing = JSON.parse(localStorage.getItem('cloudstep-plans') || '[]');
+  existing.unshift(plan);
+  localStorage.setItem('cloudstep-plans', JSON.stringify(existing));
+}
+planForm.addEventListener('submit', async function (event) {
+  event.preventDefault();
+  if (isSaving) return;
+  if (currentPlanStep === 1) { document.querySelector('#planNext1').click(); return; }
+  if (currentPlanStep === 2) { document.querySelector('#planNext2').click(); return; }
+  if (currentPlanStep !== 3) return;
+  if (!validateName()) { showPlanStep(1); planName.focus(); return; }
+  if (!validatePlanChoices()) { showPlanStep(2); (!planField.value ? planField : planLevel).focus(); return; }
+  if (practiceOption.checked && !practiceGoals.some(radio => radio.checked)) {
+    showPlanStep(2);
+    planSelectError.textContent = '추가 실습 목표를 선택해 주세요.';
+    practiceGoals[0].focus();
+    return;
+  }
+  const plan = {
+    id: typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : String(Date.now()),
+    name: planName.value.trim(), field: planField.value, level: planLevel.value,
+    practice: practiceOption.checked ? practiceGoals.find(radio => radio.checked)?.value : null,
+    createdAt: new Date().toISOString()
+  };
+  setSaveState(true, '학습 계획을 저장하고 있습니다.');
+  try {
+    await persistPlan(plan);
+    planCompleteMessage.textContent = plan.name + '님의 ‘' + plan.field + '’ 학습 계획을 브라우저에 저장했습니다. (수준: ' + plan.level + ')';
+    setSaveState(false, '학습 계획 저장이 완료되었습니다.');
+    showPlanStep(4);
+    prepareRecommendations();
+    document.querySelector('#goRecommend').focus();
+  } catch (error) {
+    setSaveState(false, '저장하지 못했습니다. 입력한 내용은 그대로 유지됩니다. 다시 시도해 주세요.');
+  }
 });
 
 document.querySelector('#planRestart').addEventListener('click', function () {
+  planForm.reset();
+  syncPracticeOptions();
   planName.value = '';
+  nameField.classList.remove('is-valid', 'has-error');
+  nameHelp.textContent = '2~30자로 입력해 주세요.';
+  nameCount.textContent = '0 / 30자';
+  setSaveState(false, '');
   planField.value = '';
   planLevel.value = '';
   planError.textContent = '';
@@ -348,3 +454,12 @@ function clearTopicSelection() {
 document.querySelector('#recommendCancel').addEventListener('click', clearTopicSelection);
 document.querySelector('#recommendChange').addEventListener('click', clearTopicSelection);
 document.querySelector('#recommendReset').addEventListener('click', clearTopicSelection);
+
+// 9주차: 조건부 라디오를 선택하면 이전 선택 오류 문구를 즉시 해제
+practiceGoals.forEach(function (radio) {
+  radio.addEventListener('change', function () {
+    if (practiceGoals.some(item => item.checked) && planField.value && planLevel.value) {
+      clearPlanSelectError();
+    }
+  });
+});

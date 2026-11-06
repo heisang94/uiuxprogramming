@@ -164,3 +164,51 @@ body.dark .conditional-options { border-color: #596174; }
 body.dark .submit-status { color: #b5efc3; }
 body.dark .submit-status.is-error { color: #ffb8b8; }
 @media (max-width: 390px) { .field-meta { gap: 8px; } }
+
+
+/* =========================
+   10주차: 현재 메뉴·저장 목록·모바일 메뉴
+   ========================= */
+.site-nav a.is-current {
+  color: #24528f;
+  background-color: #e8f0fa;
+  box-shadow: inset 0 -3px 0 #3d6cb9;
+}
+.menu-toggle { display: none; margin: 0 0 12px auto; padding: 10px 14px; min-height: 44px; border: 1px solid #3d6cb9; border-radius: 8px; color: #24528f; background: #fff; font: inherit; font-weight: 700; cursor: pointer; }
+.menu-toggle:focus-visible, .filter-button:focus-visible, .archive-create-link:focus-visible { outline: 3px solid #a9c7eb; outline-offset: 3px; }
+.plan-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
+.filter-button { padding: 10px 16px; min-height: 44px; border: 1px solid #cddbf0; border-radius: 10px; background: #f3f7fc; color: #292a31; font: inherit; font-weight: 700; cursor: pointer; }
+.filter-button:hover { border-color: #3d6cb9; }
+.filter-button.is-active { border-color: #3d6cb9; background: #3d6cb9; color: #fff; }
+.archive-status { margin: 0 0 16px; color: #5e6272; font-size: 14px; }
+.archive-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; }
+.archive-card { padding: 20px; border: 1px solid #cddbf0; border-radius: 12px; background: #f3f7fc; overflow-wrap: anywhere; }
+.archive-card h3 { font-size: 18px; }
+.archive-card p { color: #5e6272; }
+.archive-state { display: inline-block; padding: 3px 10px; margin: 0 10px 10px 0; border-radius: 20px; background: #e7f5ec; color: #245c35; font-size: 13px; font-weight: 700; }
+.archive-state.is-cancelled { background: #fdecec; color: #a12622; }
+.archive-action { font-size: 14px; padding: 8px 12px; }
+.archive-empty { padding: 22px; border-radius: 12px; background: #f3f7fc; }
+.archive-create-link { color: #24528f; text-decoration: underline; font-weight: 700; }
+body.dark .site-nav a.is-current { color: #fff; background: #416087; box-shadow: inset 0 -3px 0 #a9c7ff; }
+body.dark .menu-toggle, body.dark .filter-button { color: #fff; border-color: #667085; background: #343b4c; }
+body.dark .filter-button.is-active { color: #fff; border-color: #638cce; background: #416ba9; }
+body.dark .archive-status, body.dark .archive-card p { color: #d8d8e2; }
+body.dark .archive-card, body.dark .archive-empty { border-color: #596174; background: #363b49; }
+body.dark .archive-state { color: #b5efc3; background: #244732; }
+body.dark .archive-state.is-cancelled { color: #ffb8b8; background: #522b31; }
+body.dark .archive-create-link { color: #a9c7ff; }
+/* 768px 기존 규칙에서 세로로 바뀌던 내비게이션은 600px 초과 시 가로 유지 */
+@media (min-width: 601px) and (max-width: 768px) {
+  .site-nav { flex-direction: row; align-items: center; gap: 8px; }
+  .site-nav a { padding: 10px 12px; }
+}
+@media (max-width: 600px) {
+  .menu-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .site-nav { display: none; flex-direction: column; align-items: stretch; width: 100%; gap: 4px; margin-top: 8px; }
+  .site-nav.is-open { display: flex; }
+  .site-nav a { display: block; padding: 12px 14px; min-height: 44px; border-radius: 8px; }
+  .plan-filters { gap: 6px; }
+  .filter-button { flex: 1 1 auto; }
+  .archive-list { grid-template-columns: 1fr; }
+}

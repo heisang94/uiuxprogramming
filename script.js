@@ -285,6 +285,7 @@ planForm.addEventListener('submit', async function (event) {
   setSaveState(true, '학습 계획을 저장하고 있습니다.');
   try {
     await persistPlan(plan);
+    renderArchive();
     planCompleteMessage.textContent = plan.name + '님의 ‘' + plan.field + '’ 학습 계획을 브라우저에 저장했습니다. (수준: ' + plan.level + ')';
     setSaveState(false, '학습 계획 저장이 완료되었습니다.');
     showPlanStep(4);
@@ -463,3 +464,131 @@ practiceGoals.forEach(function (radio) {
     }
   });
 });
+
+
+// =========================
+// 10주차: 내비게이션과 현재 위치
+// =========================
+const mainNav = document.querySelector('#mainNav');
+const navLinks = [...mainNav.querySelectorAll('a[href^="#"]')];
+const menuToggle = document.querySelector('#menuToggle');
+
+function updateCurrentNav() {
+  const hash = window.location.hash;
+  const currentLink = navLinks.find(link => link.getAttribute('href') === hash) || navLinks[0];
+  navLinks.forEach(link => {
+    const current = link === currentLink;
+    link.classList.toggle('is-current', current);
+    if (current) link.setAttribute('aria-current', 'location');
+    else link.removeAttribute('aria-current');
+  });
+}
+
+function closeMobileMenu() {
+  mainNav.classList.remove('is-open');
+  menuToggle.textContent = '메뉴 열기';
+  menuToggle.setAttribute('aria-expanded', 'false');
+}
+
+menuToggle.addEventListener('click', () => {
+  const open = mainNav.classList.toggle('is-open');
+  menuToggle.textContent = open ? '메뉴 닫기' : '메뉴 열기';
+  menuToggle.setAttribute('aria-expanded', String(open));
+});
+navLinks.forEach(link => link.addEventListener('click', () => {
+  // 같은 해시를 다시 눌러도 표시가 동기화되도록 처리
+  if (window.location.hash === link.getAttribute('href')) updateCurrentNav();
+  closeMobileMenu();
+}));
+window.addEventListener('hashchange', updateCurrentNav);
+updateCurrentNav();
+
+// =========================
+// 10주차: 저장한 학습 계획과 상태별 필터
+// =========================
+const filterButtons = [...document.querySelectorAll('.filter-button')];
+const planList = document.querySelector('#planList');
+const archiveStatus = document.querySelector('#archiveStatus');
+const archiveEmpty = document.querySelector('#archiveEmpty');
+const archiveEmptyMessage = document.querySelector('#archiveEmptyMessage');
+const archiveCreateLink = document.querySelector('#archiveCreateLink');
+let currentFilter = 'all';
+
+function readSavedPlans() {
+  try {
+    const stored = JSON.parse(localStorage.getItem('cloudstep-plans') || '[]');
+    return Array.isArray(stored) ? stored.filter(plan => plan && typeof plan === 'object') : [];
+  } catch (error) {
+    archiveStatus.textContent = '저장 목록을 읽지 못했습니다. 브라우저 저장 데이터를 확인해 주세요.';
+    return [];
+  }
+}
+
+function getVisiblePlans(plans) {
+  return plans.filter(plan => {
+    if (currentFilter === 'cancelled') return plan.cancelled === true;
+    if (currentFilter === 'active') return plan.cancelled !== true;
+    return true;
+  });
+}
+
+function updatePlanCancelled(id, cancelled) {
+  try {
+    const plans = readSavedPlans();
+    const target = plans.find(plan => String(plan.id) === String(id));
+    if (!target) return;
+    target.cancelled = cancelled;
+    localStorage.setItem('cloudstep-plans', JSON.stringify(plans));
+    renderArchive();
+  } catch (error) {
+    archiveStatus.textContent = '계획 상태를 변경하지 못했습니다. 다시 시도해 주세요.';
+  }
+}
+
+function renderArchive() {
+  const plans = readSavedPlans();
+  const visiblePlans = getVisiblePlans(plans);
+  planList.replaceChildren();
+  archiveStatus.textContent = `전체 ${plans.length}개 · 진행 중 ${plans.filter(plan => plan.cancelled !== true).length}개 · 취소됨 ${plans.filter(plan => plan.cancelled === true).length}개 · 현재 ${visiblePlans.length}개 표시`;
+  archiveEmpty.hidden = visiblePlans.length !== 0;
+  planList.hidden = visiblePlans.length === 0;
+  if (visiblePlans.length === 0) {
+    archiveEmptyMessage.textContent = currentFilter === 'all'
+      ? '아직 저장한 계획이 없습니다. 새 학습 계획을 만들어 보세요.'
+      : currentFilter === 'cancelled'
+        ? '취소된 계획이 없습니다. 다른 상태를 선택해 보세요.'
+        : '진행 중인 계획이 없습니다. 다른 상태를 선택해 보세요.';
+    archiveCreateLink.hidden = currentFilter !== 'all';
+  }
+  visiblePlans.forEach(plan => {
+    const item = document.createElement('li');
+    item.className = 'archive-card';
+    const heading = document.createElement('h3');
+    heading.textContent = `${plan.name || '이름 없음'} · ${plan.field || '분야 미정'}`;
+    const details = document.createElement('p');
+    details.textContent = `학습 수준: ${plan.level || '미정'} · 실습 목표: ${plan.practice || '없음'}`;
+    const state = document.createElement('span');
+    const cancelled = plan.cancelled === true;
+    state.className = 'archive-state' + (cancelled ? ' is-cancelled' : '');
+    state.textContent = cancelled ? '취소됨' : '진행 중';
+    const action = document.createElement('button');
+    action.type = 'button';
+    action.className = 'secondary-button archive-action';
+    action.textContent = cancelled ? '다시 진행하기' : '계획 취소하기';
+    action.setAttribute('aria-label', `${heading.textContent} ${action.textContent}`);
+    action.addEventListener('click', () => updatePlanCancelled(plan.id, !cancelled));
+    item.append(heading, details, state, action);
+    planList.append(item);
+  });
+}
+
+filterButtons.forEach(button => button.addEventListener('click', () => {
+  currentFilter = button.dataset.filter;
+  filterButtons.forEach(item => {
+    const selected = item === button;
+    item.classList.toggle('is-active', selected);
+    item.setAttribute('aria-pressed', String(selected));
+  });
+  renderArchive();
+}));
+renderArchive();

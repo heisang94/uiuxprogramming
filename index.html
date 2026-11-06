@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 9주차: 기존 학습 계획과 8주차 맞춤 학습 추천에 폼 검증·조건부 입력·저장 경험 추가 -->
+  <!-- 10주차: 기존 기능 유지 + 내비게이션, 저장 목록 필터, 모바일 메뉴 -->
   <header class="site-header">
     <p class="eyebrow">CLOUD LEARNING GUIDE</p>
     <h1>CloudStep</h1>
     <p class="header-description">클라우드 엔지니어를 위한 쉽고 체계적인 학습 가이드</p>
-    <nav class="site-nav" aria-label="주요 메뉴">
-      <a href="#about">서비스 소개</a><a href="#features">주요 기능</a><a href="#steps">학습 방법</a><a href="#plan">학습 계획 만들기</a><a href="#recommend">맞춤 학습 추천</a><a href="#subscribe">소식 받기</a>
+    <button id="menuToggle" class="menu-toggle" type="button" aria-controls="mainNav" aria-expanded="false">메뉴 열기</button>
+    <nav id="mainNav" class="site-nav" aria-label="주요 메뉴">
+      <a href="#about">서비스 소개</a><a href="#features">주요 기능</a><a href="#steps">학습 방법</a><a href="#plan">학습 계획 만들기</a><a href="#archive">저장한 계획</a><a href="#recommend">맞춤 학습 추천</a><a href="#subscribe">소식 받기</a>
     </nav>
     <div class="theme-control"><button id="themeButton" class="theme-button" type="button">어두운 테마로 변경</button></div>
   </header>
@@ -76,6 +77,24 @@
           </div>
         </form>
       </div>
+    </section>
+    <!-- 10주차: 실제 localStorage의 학습 계획을 필터로 탐색 -->
+    <section id="archive" class="content-section archive-section" aria-labelledby="archiveTitle">
+      <p class="eyebrow">10주차 · 정보 탐색</p>
+      <h2 id="archiveTitle">저장한 학습 계획</h2>
+      <p>이 브라우저에 저장한 계획을 상태별로 확인하고 취소하거나 다시 활성화할 수 있습니다.</p>
+      <div class="plan-filters" role="group" aria-label="저장한 학습 계획 표시 범위">
+        <button class="filter-button is-active" type="button" data-filter="all" aria-pressed="true">전체</button>
+        <button class="filter-button" type="button" data-filter="active" aria-pressed="false">진행 중</button>
+        <button class="filter-button" type="button" data-filter="cancelled" aria-pressed="false">취소됨</button>
+      </div>
+      <p id="archiveStatus" class="archive-status" role="status" aria-live="polite"></p>
+      <div id="archiveEmpty" class="archive-empty" hidden>
+        <h3>표시할 학습 계획이 없습니다.</h3>
+        <p id="archiveEmptyMessage">계획을 만들어 저장하면 여기에 표시됩니다.</p>
+        <a href="#plan" class="archive-create-link" id="archiveCreateLink">학습 계획 만들러 가기</a>
+      </div>
+      <ul id="planList" class="archive-list" aria-label="저장된 학습 계획 목록"></ul>
     </section>
     <section id="recommend" class="content-section recommend-section" aria-labelledby="recommendTitle">
       <p class="eyebrow">8주차 · 맞춤 학습 추천</p><h2 id="recommendTitle">맞춤 학습 추천</h2><p>완성한 학습 계획을 바탕으로 추천 항목을 확인하고, 지금 시작할 공부를 하나 선택해 보세요.</p>

@@ -482,6 +482,7 @@ function updateCurrentNav() {
     if (current) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
   });
+  document.title = currentLink.textContent.trim() + ' | CloudStep';
 }
 
 function closeMobileMenu() {
@@ -494,6 +495,12 @@ menuToggle.addEventListener('click', () => {
   const open = mainNav.classList.toggle('is-open');
   menuToggle.textContent = open ? '메뉴 닫기' : '메뉴 열기';
   menuToggle.setAttribute('aria-expanded', String(open));
+});
+// 11주차: 열린 모바일 메뉴를 Escape로 닫고 메뉴 버튼에 초점 복귀
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Escape' || !mainNav.classList.contains('is-open')) return;
+  closeMobileMenu();
+  menuToggle.focus();
 });
 navLinks.forEach(link => link.addEventListener('click', () => {
   // 같은 해시를 다시 눌러도 표시가 동기화되도록 처리
@@ -540,6 +547,10 @@ function updatePlanCancelled(id, cancelled) {
     target.cancelled = cancelled;
     localStorage.setItem('cloudstep-plans', JSON.stringify(plans));
     renderArchive();
+    // 카드가 사라지는 필터에서는 선택한 필터로, 남아 있으면 해당 카드 버튼으로 초점 복귀
+    const nextAction = [...planList.querySelectorAll('.archive-action')]
+      .find(button => button.dataset.planId === String(id));
+    (nextAction || filterButtons.find(button => button.dataset.filter === currentFilter))?.focus();
   } catch (error) {
     archiveStatus.textContent = '계획 상태를 변경하지 못했습니다. 다시 시도해 주세요.';
   }
@@ -549,7 +560,10 @@ function renderArchive() {
   const plans = readSavedPlans();
   const visiblePlans = getVisiblePlans(plans);
   planList.replaceChildren();
-  archiveStatus.textContent = `전체 ${plans.length}개 · 진행 중 ${plans.filter(plan => plan.cancelled !== true).length}개 · 취소됨 ${plans.filter(plan => plan.cancelled === true).length}개 · 현재 ${visiblePlans.length}개 표시`;
+  const filterName = filterButtons.find(button => button.dataset.filter === currentFilter)?.textContent.trim() || '전체';
+  archiveStatus.textContent = visiblePlans.length
+    ? `${filterName} 계획 ${visiblePlans.length}개가 표시됩니다. (전체 ${plans.length}개 · 진행 중 ${plans.filter(plan => plan.cancelled !== true).length}개 · 취소됨 ${plans.filter(plan => plan.cancelled === true).length}개)`
+    : `${filterName} 계획이 없습니다. 다른 조건을 선택해 보세요. (전체 ${plans.length}개)`;
   archiveEmpty.hidden = visiblePlans.length !== 0;
   planList.hidden = visiblePlans.length === 0;
   if (visiblePlans.length === 0) {
@@ -558,7 +572,7 @@ function renderArchive() {
       : currentFilter === 'cancelled'
         ? '취소된 계획이 없습니다. 다른 상태를 선택해 보세요.'
         : '진행 중인 계획이 없습니다. 다른 상태를 선택해 보세요.';
-    archiveCreateLink.hidden = currentFilter !== 'all';
+    archiveCreateLink.hidden = false;
   }
   visiblePlans.forEach(plan => {
     const item = document.createElement('li');
@@ -576,6 +590,7 @@ function renderArchive() {
     action.className = 'secondary-button archive-action';
     action.textContent = cancelled ? '다시 진행하기' : '계획 취소하기';
     action.setAttribute('aria-label', `${heading.textContent} ${action.textContent}`);
+    action.dataset.planId = String(plan.id);
     action.addEventListener('click', () => updatePlanCancelled(plan.id, !cancelled));
     item.append(heading, details, state, action);
     planList.append(item);
@@ -592,3 +607,24 @@ filterButtons.forEach(button => button.addEventListener('click', () => {
   renderArchive();
 }));
 renderArchive();
+
+
+// 11주차: 빈 필터 결과의 '전체 보기'로 돌아가면서 초점을 명확히 이동
+const emptyAction = archiveEmpty.querySelector('a');
+function syncEmptyAction() {
+  const filtered = currentFilter !== 'all';
+  emptyAction.hidden = false;
+  emptyAction.textContent = filtered ? '전체 보기' : '학습 계획 만들러 가기';
+  emptyAction.href = filtered ? '#archive' : '#plan';
+}
+const originalRenderArchive = renderArchive;
+// 기존 renderArchive 호출 흐름에 맞춰 표시 문구를 초기화
+filterButtons.forEach(button => button.addEventListener('click', syncEmptyAction));
+emptyAction.addEventListener('click', (event) => {
+  if (currentFilter === 'all') return;
+  event.preventDefault();
+  const allButton = filterButtons.find(button => button.dataset.filter === 'all');
+  allButton.click();
+  allButton.focus();
+});
+syncEmptyAction();

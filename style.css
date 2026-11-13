@@ -212,3 +212,43 @@ body.dark .archive-create-link { color: #a9c7ff; }
   .filter-button { flex: 1 1 auto; }
   .archive-list { grid-template-columns: 1fr; }
 }
+
+
+/* =========================
+   11주차: 웹 접근성 개선
+   색 이외의 단서, 대비 강화, 키보드 탐색
+   ========================= */
+:root { --surface: #ffffff; --muted: #505566; --blue: #24528f; }
+body { color: #292a31; }
+.header-description, .panel p, .recommend-help, .field-note,
+.archive-status, .archive-card p, .input-count, .field-meta p { color: var(--muted); }
+.site-nav a[aria-current="location"],
+.filter-button[aria-pressed="true"] {
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-thickness: 2px;
+}
+/* 색상 변경만으로 상태를 구분하지 않도록 표시 기호도 추가 */
+.archive-state::before { content: "✓ "; }
+.archive-state.is-cancelled::before { content: "× "; }
+.skip-link {
+  position: fixed; top: 8px; left: 8px; z-index: 1000;
+  transform: translateY(-160%);
+  padding: 10px 14px; border: 2px solid var(--blue); border-radius: 8px;
+  background: var(--surface); color: var(--blue); font-weight: 800;
+  text-decoration: underline;
+}
+.skip-link:focus-visible { transform: translateY(0); }
+:focus-visible { outline: 3px solid #24528f; outline-offset: 3px; }
+.skip-link:focus-visible { outline: 3px solid #24528f; outline-offset: 3px; }
+#top:focus { outline: none; }
+body.dark { --surface: #2d2e38; --muted: #d8d8e2; --blue: #a9c7ff; }
+body.dark .skip-link { background: var(--surface); color: var(--blue); border-color: var(--blue); }
+body.dark :focus-visible { outline-color: #a9c7ff; }
+body.dark .header-description, body.dark .panel p, body.dark .recommend-help,
+body.dark .field-note, body.dark .archive-status, body.dark .archive-card p,
+body.dark .input-count, body.dark .field-meta p { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}

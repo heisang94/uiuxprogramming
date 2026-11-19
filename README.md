@@ -52,6 +52,3 @@ CloudStep은 클라우드·시스템 엔지니어 입문자가 Linux, Network, D
 - **GitHub 저장소:** (실제 본인 저장소 URL 입력)
 - **배포 웹페이지:** (실제 배포 URL 입력)
 - **구현 컴포넌트:** 탭, 아코디언, 저장 계획 카드 (위 2절 참고)
-
-## 7. 적용 방법
-기존 프로젝트의 `index.html`, `style.css`, `script.js`, `README.md`를 이 파일들로 교체하고 GitHub에 커밋·푸시합니다. **기존 `assets/images/cloud-study.jpg`는 삭제하지 마세요.** 저장과 이메일 신청은 브라우저에서 동작하는 수업용 시연이며 실제 서버나 이메일 발송과 연결되지 않습니다.

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 11주차: 기존 기능 유지 + 색상·정보·키보드 접근성 개선 -->
+  <!-- 12주차: 기존 기능 유지 + 재사용 가능한 탭·아코디언·계획 카드 -->
   <a class="skip-link" href="#top">본문 바로가기</a>
   <header class="site-header">
     <p class="eyebrow">CLOUD LEARNING GUIDE</p>
@@ -15,7 +15,7 @@
     <p class="header-description">클라우드 엔지니어를 위한 쉽고 체계적인 학습 가이드</p>
     <button id="menuToggle" class="menu-toggle" type="button" aria-controls="mainNav" aria-expanded="false">메뉴 열기</button>
     <nav id="mainNav" class="site-nav" aria-label="주요 메뉴">
-      <a href="#about">서비스 소개</a><a href="#features">주요 기능</a><a href="#steps">학습 방법</a><a href="#plan">학습 계획 만들기</a><a href="#archive">저장한 계획</a><a href="#recommend">맞춤 학습 추천</a><a href="#subscribe">소식 받기</a>
+      <a href="#about">서비스 소개</a><a href="#features">주요 기능</a><a href="#steps">학습 방법</a><a href="#plan">학습 계획 만들기</a><a href="#archive">저장한 계획</a><a href="#faq">자주 묻는 질문</a><a href="#recommend">맞춤 학습 추천</a><a href="#subscribe">소식 받기</a>
     </nav>
     <div class="theme-control"><button id="themeButton" class="theme-button" type="button">어두운 테마로 변경</button></div>
   </header>
@@ -81,7 +81,7 @@
     </section>
     <!-- 10주차: 실제 localStorage의 학습 계획을 필터로 탐색 -->
     <section id="archive" class="content-section archive-section" aria-labelledby="archiveTitle">
-      <p class="eyebrow">11주차 · 접근성을 고려한 정보 탐색</p>
+      <p class="eyebrow">12주차 · 재사용 가능한 계획 카드</p>
       <h2 id="archiveTitle">저장한 학습 계획</h2>
       <p>이 브라우저에 저장한 계획을 상태별로 확인하고 취소하거나 다시 활성화할 수 있습니다.</p>
       <div class="plan-filters" role="group" aria-label="저장한 학습 계획 표시 범위">
@@ -104,6 +104,26 @@
         <div id="recommendPreview" class="recommend-preview" hidden><h3>선택한 학습 항목</h3><p id="recommendSelected"></p><p id="recommendDescription"></p><div class="plan-actions"><button id="recommendConfirm" class="primary-button" type="button">이 항목으로 학습 시작하기</button><button id="recommendCancel" class="secondary-button" type="button">선택 취소하기</button></div></div>
         <div id="recommendDone" class="recommend-done" hidden><h3>학습 항목 선택이 완료되었습니다!</h3><p id="recommendDoneMessage" aria-live="polite"></p><div class="plan-actions"><button id="recommendChange" class="secondary-button" type="button">다른 항목 선택하기</button><button id="recommendReset" class="secondary-button" type="button">추천 선택 초기화</button></div></div>
         <div id="recommendEmpty" class="recommend-notice" hidden>현재 조건에 맞는 추천 항목이 없습니다. 학습 계획에서 다른 분야나 수준을 선택해 주세요.</div>
+      </div>
+    </section>
+    <!-- 12주차: 여러 항목에 같은 HTML 규칙과 JavaScript 함수를 재사용하는 아코디언 -->
+    <section id="faq" class="content-section" aria-labelledby="faqTitle">
+      <p class="eyebrow">12주차 · 재사용 UI 컴포넌트</p>
+      <h2 id="faqTitle">자주 묻는 질문</h2>
+      <p>질문을 선택하면 답변을 펼치거나 접을 수 있습니다. Enter·Space로 조작할 수 있습니다.</p>
+      <div class="accordion" data-accordion>
+        <div class="accordion-item">
+          <h3><button id="faqButton1" class="accordion-trigger" type="button" aria-expanded="false" aria-controls="faqPanel1">학습 계획은 어디에 저장되나요?<span class="accordion-symbol" aria-hidden="true">+</span></button></h3>
+          <div id="faqPanel1" class="accordion-panel" role="region" aria-labelledby="faqButton1" hidden><p>학습 계획은 현재 브라우저의 localStorage에 저장됩니다. 다른 브라우저나 기기와 자동으로 동기화되지는 않습니다.</p></div>
+        </div>
+        <div class="accordion-item">
+          <h3><button id="faqButton2" class="accordion-trigger" type="button" aria-expanded="false" aria-controls="faqPanel2">학습 계획을 취소하면 삭제되나요?<span class="accordion-symbol" aria-hidden="true">+</span></button></h3>
+          <div id="faqPanel2" class="accordion-panel" role="region" aria-labelledby="faqButton2" hidden><p>취소한 계획도 저장 목록에 남습니다. ‘취소됨’ 필터에서 확인하고 ‘다시 진행하기’를 눌러 활성화할 수 있습니다.</p></div>
+        </div>
+        <div class="accordion-item">
+          <h3><button id="faqButton3" class="accordion-trigger" type="button" aria-expanded="false" aria-controls="faqPanel3">추천 학습 항목은 어떻게 선택하나요?<span class="accordion-symbol" aria-hidden="true">+</span></button></h3>
+          <div id="faqPanel3" class="accordion-panel" role="region" aria-labelledby="faqButton3" hidden><p>학습 계획을 저장한 뒤 맞춤 학습 추천으로 이동하세요. 관심 분야와 수준에 맞는 항목을 선택하고 확정할 수 있습니다.</p></div>
+        </div>
       </div>
     </section>
     <section id="subscribe" class="content-section subscribe-section"><h2>학습 소식 받기</h2><p>새로운 클라우드 학습 자료와 실습 정보를 이메일로 받아보세요.</p><form class="subscribe-form" id="subscribeForm" novalidate><div class="form-fields"><label class="email-field" for="email">이메일 주소<input type="email" id="email" name="email" placeholder="name@example.com" maxlength="100" autocomplete="email"></label><p id="emailCount" class="input-count" aria-live="polite">현재 입력한 글자 수: 0 / 100</p><label class="agree-row" for="agreeCheck"><input type="checkbox" id="agreeCheck">학습 소식 안내 및 이메일 주소 이용에 동의합니다.</label><p id="agreeMessage" class="agree-message" aria-live="polite">안내 내용에 동의하면 신청 버튼이 활성화됩니다.</p><button class="primary-button" id="subscribeButton" type="submit" disabled>학습 소식 신청하기</button></div></form><p id="subscribeMessage" class="subscribe-message" aria-live="polite">이메일을 입력하고 안내 내용에 동의해 주세요.</p></section>

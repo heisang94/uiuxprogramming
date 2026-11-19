@@ -59,34 +59,62 @@ subscribeForm.addEventListener('submit', function (event) {
   agreeCheck.disabled = true;
 });
 
-function activateTab(nextTab) {
-  tabs.forEach(function (tab) {
-    const active = tab === nextTab;
-    tab.classList.toggle('is-active', active);
-    tab.setAttribute('aria-selected', String(active));
-    tab.tabIndex = active ? 0 : -1;
+// 12주차: tablist별로 독립 동작하는 재사용 가능한 탭 컴포넌트
+function initTabs(tablist) {
+  const groupTabs = [...tablist.querySelectorAll('[role="tab"]')];
+  if (!groupTabs.length) return;
+  const groupPanels = groupTabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+
+  function activateTab(nextTab) {
+    groupTabs.forEach(tab => {
+      const active = tab === nextTab;
+      tab.classList.toggle('is-active', active);
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+    });
+    groupPanels.forEach((panel, index) => {
+      if (!panel) return;
+      const active = groupTabs[index] === nextTab;
+      panel.classList.toggle('is-active', active);
+      panel.hidden = !active;
+    });
+  }
+
+  groupTabs.forEach(tab => {
+    tab.addEventListener('click', () => activateTab(tab));
+    tab.addEventListener('keydown', event => {
+      if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      const index = groupTabs.indexOf(tab);
+      const nextIndex = event.key === 'Home' ? 0
+        : event.key === 'End' ? groupTabs.length - 1
+        : (index + (event.key === 'ArrowRight' ? 1 : -1) + groupTabs.length) % groupTabs.length;
+      activateTab(groupTabs[nextIndex]);
+      groupTabs[nextIndex].focus();
+    });
   });
-  panels.forEach(function (panel) {
-    const active = '#' + panel.id === nextTab.dataset.target;
-    panel.classList.toggle('is-active', active);
-    panel.hidden = !active;
+  activateTab(groupTabs.find(tab => tab.getAttribute('aria-selected') === 'true') || groupTabs[0]);
+}
+document.querySelectorAll('[role="tablist"]').forEach(initTabs);
+
+// 12주차: 공통 클래스로 반복되는 아코디언 항목을 동일하게 제어
+function initAccordion(container) {
+  const triggers = [...container.querySelectorAll('.accordion-trigger')];
+  triggers.forEach(trigger => {
+    const panel = document.getElementById(trigger.getAttribute('aria-controls'));
+    if (!panel) return;
+    trigger.addEventListener('click', () => {
+      const open = trigger.getAttribute('aria-expanded') !== 'true';
+      trigger.setAttribute('aria-expanded', String(open));
+      trigger.closest('.accordion-item')?.classList.toggle('is-open', open);
+      panel.hidden = !open;
+      const symbol = trigger.querySelector('.accordion-symbol');
+      if (symbol) symbol.textContent = open ? '−' : '+';
+    });
   });
 }
-tabs.forEach(function (tab) {
-  tab.addEventListener('click', function () { activateTab(tab); });
-  tab.addEventListener('keydown', function (event) {
-    if (!['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(event.key)) return;
-    event.preventDefault();
-    const index = Array.from(tabs).indexOf(tab);
-    let nextIndex = index;
-    if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
-    if (event.key === 'ArrowLeft') nextIndex = (index - 1 + tabs.length) % tabs.length;
-    if (event.key === 'Home') nextIndex = 0;
-    if (event.key === 'End') nextIndex = tabs.length - 1;
-    activateTab(tabs[nextIndex]);
-    tabs[nextIndex].focus();
-  });
-});
+document.querySelectorAll('[data-accordion]').forEach(initAccordion);
+
 
 // =========================
 // 7주차 기존 기능: 학습 계획 3단계
@@ -556,6 +584,31 @@ function updatePlanCancelled(id, cancelled) {
   }
 }
 
+// 12주차: 데이터 한 건을 같은 규칙의 카드 하나로 변환하는 재사용 함수
+function createArchiveCard(plan) {
+
+    const item = document.createElement('li');
+    item.className = 'archive-card';
+    const heading = document.createElement('h3');
+    heading.textContent = `${plan.name || '이름 없음'} · ${plan.field || '분야 미정'}`;
+    const details = document.createElement('p');
+    details.textContent = `학습 수준: ${plan.level || '미정'} · 실습 목표: ${plan.practice || '없음'}`;
+    const state = document.createElement('span');
+    const cancelled = plan.cancelled === true;
+    state.className = 'archive-state' + (cancelled ? ' is-cancelled' : '');
+    state.textContent = cancelled ? '취소됨' : '진행 중';
+    const action = document.createElement('button');
+    action.type = 'button';
+    action.className = 'secondary-button archive-action';
+    action.textContent = cancelled ? '다시 진행하기' : '계획 취소하기';
+    action.setAttribute('aria-label', `${heading.textContent} ${action.textContent}`);
+    action.dataset.planId = String(plan.id);
+    action.addEventListener('click', () => updatePlanCancelled(plan.id, !cancelled));
+    item.append(heading, details, state, action);
+    return item;
+
+}
+
 function renderArchive() {
   const plans = readSavedPlans();
   const visiblePlans = getVisiblePlans(plans);
@@ -575,25 +628,7 @@ function renderArchive() {
     archiveCreateLink.hidden = false;
   }
   visiblePlans.forEach(plan => {
-    const item = document.createElement('li');
-    item.className = 'archive-card';
-    const heading = document.createElement('h3');
-    heading.textContent = `${plan.name || '이름 없음'} · ${plan.field || '분야 미정'}`;
-    const details = document.createElement('p');
-    details.textContent = `학습 수준: ${plan.level || '미정'} · 실습 목표: ${plan.practice || '없음'}`;
-    const state = document.createElement('span');
-    const cancelled = plan.cancelled === true;
-    state.className = 'archive-state' + (cancelled ? ' is-cancelled' : '');
-    state.textContent = cancelled ? '취소됨' : '진행 중';
-    const action = document.createElement('button');
-    action.type = 'button';
-    action.className = 'secondary-button archive-action';
-    action.textContent = cancelled ? '다시 진행하기' : '계획 취소하기';
-    action.setAttribute('aria-label', `${heading.textContent} ${action.textContent}`);
-    action.dataset.planId = String(plan.id);
-    action.addEventListener('click', () => updatePlanCancelled(plan.id, !cancelled));
-    item.append(heading, details, state, action);
-    planList.append(item);
+    planList.append(createArchiveCard(plan));
   });
 }
 

@@ -252,3 +252,44 @@ body.dark .input-count, body.dark .field-meta p { color: var(--muted); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* =========================
+   12주차: 공통 UI 토큰 및 재사용 컴포넌트
+   ========================= */
+:root {
+  --component-radius: 12px;
+  --component-gap: 12px;
+  --component-focus: #24528f;
+}
+/* 여러 버튼에 동일한 크기·초점 규칙 적용 */
+.primary-button, .secondary-button, .theme-button, .tab,
+.filter-button, .menu-toggle, .recommend-option, .accordion-trigger {
+  min-height: 48px;
+}
+:is(.primary-button, .secondary-button, .theme-button, .tab,
+.filter-button, .menu-toggle, .recommend-option, .accordion-trigger):focus-visible {
+  outline: 3px solid var(--component-focus);
+  outline-offset: 3px;
+}
+.accordion { display: grid; gap: var(--component-gap); }
+.accordion-item { border: 1px solid #cddbf0; border-radius: var(--component-radius); overflow: hidden; background: #f3f7fc; }
+.accordion-item h3 { margin: 0; }
+.accordion-trigger {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  width: 100%; padding: 15px 18px; border: 0; background: transparent;
+  color: #292a31; font: inherit; font-weight: 700; text-align: left; cursor: pointer;
+}
+.accordion-trigger:hover, .accordion-item.is-open .accordion-trigger { background: #e8f0fa; }
+.accordion-symbol { flex: none; font-size: 22px; line-height: 1; color: #24528f; }
+.accordion-panel { padding: 0 18px 18px; color: #505566; }
+.accordion-panel p { margin: 0; }
+body.dark { --component-focus: #a9c7ff; }
+body.dark .accordion-item { border-color: #596174; background: #363b49; }
+body.dark .accordion-trigger { color: #f4f4f8; }
+body.dark .accordion-trigger:hover, body.dark .accordion-item.is-open .accordion-trigger { background: #416087; }
+body.dark .accordion-symbol { color: #a9c7ff; }
+body.dark .accordion-panel { color: #d8d8e2; }
+@media (max-width: 600px) {
+  .accordion-trigger { padding: 14px; }
+  .accordion-panel { padding: 0 14px 14px; }
+}
